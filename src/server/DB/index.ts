@@ -1,6 +1,8 @@
-import { connect } from 'http2';
+// import { connect } from 'http2';
 import * as mysql from 'mysql';
 import chirps from './chirps';
+import users from './users';
+
 
 
 export const Connection = mysql.createConnection({
@@ -10,9 +12,9 @@ export const Connection = mysql.createConnection({
     database: 'chirpr'
 });
 
-export const query = (query: string, values?: Array<string | number>) => {
+export const Query = (Query: string, values?: Array<string | number>) => {
     return new Promise<Array<any>>((resolve, reject) => {
-        Connection.query(query, values, (err, results) => {
+        Connection.query(Query, values, (err, results) => {
             if(err) return reject(err);
             return resolve(results);
         });
@@ -21,5 +23,5 @@ export const query = (query: string, values?: Array<string | number>) => {
 
 export default {
 chirps,
-
+users
 }

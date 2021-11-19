@@ -1,16 +1,20 @@
-import { query }from './index';
+import { Query } from ".";
 
 
-const all = async () => query('select * from chirps');
-const one = async (id: number) => query('SELCT * from chirps where id =?',[id]);
-const insert = (userid: number, message: string, _insertId: number) => query('INSERT INTO chirps (userid, message) VALUE (?)', [[userid, message]]);
-const update = (message: string, id: number) => query('UPDATE chirps SET message = ? WHERE id = ?', [message, id]);
-const destroy = (id: number) => query('DELETE FROM chirps WHERE id = ?', [id]);
+const all = () => Query("SELECT chirps.id, chirps.content, chirps._created, users.name FROM chirps JOIN users on chirps.userid = users.id");
+
+const one = (chirpid: string) => Query("SELECT chirps.id, chirps.content, chirps._created, users.name FROM chirps JOIN users on chirps.userid = users.id WHERE chirps.id = ?", [chirpid]);
+
+const deleteOne = (chirpid: string) => Query("DELETE FROM chirps WHERE id = ?", [chirpid]);
+
+const insert = (userid: string, content: string) => Query("INSERT INTO chirps (userid, content) VALUES (?, ?)", [userid, content]);
+
+const edit = (content: string, chirpid: string) => Query("UPDATE chirps SET content = ? WHERE chirps.id = ?", [content, chirpid])
 
 export default {
     all,
     one,
+    deleteOne,
     insert,
-    update,
-    destroy
+    edit
 };
